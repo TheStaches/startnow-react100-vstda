@@ -4,27 +4,40 @@ import React from "react";
 class TodoItem extends React.Component {
     constructor(props) {
         super(props);
+        this.colors = {
+            1: "list-group-item-success",
+            2: "list-group-item-warning",
+            3: "list-group-item-danger"
+          }
+
+          this.checked = false;
     
     this.edit = this.edit.bind(this);
+    this.delete = this.delete.bind(this);
     }
 
-    edit(e) {
-        this.props.updateIsEditing(e.target.key)
+    // Passes selected elements index as an arguement to App so it can update isEditing in state and to rerender the todoItem as an EditPage.
+    edit() {
+        this.props.updateIsEditing(this.props.index)
+    }
+
+    // Passes selected elements index as an arguement to App to delete the todoItem.
+    delete() {
+        this.props.deleteIndex(this.props.index)
     }
 
     render() {
         return (
+            
 
-            <div className="card-body">
-                <input type="checkbox" />
+            <li className={`list-group-item ${this.colors[this.props.priority]} `}>
+                <input type="checkbox" onClick={this.delete} />
                 {this.props.name}
-                <a className="button btn float-right delete-todo" ><i className="fas fa-trash-alt" /></a>
+                <a className="button btn float-right delete-todo" onClick={this.delete}><i className="fas fa-trash-alt" /></a>
                 <a className="button btn float-right edit-todo" onClick={this.edit}><i className="fas fa-edit" /></a>
-            </div>
+            </li>
         );
     }
 }
 
 export default TodoItem;
-// const {isExpanded} = this.state.isExpanded; // pulls the isExpanded boolean and sets it into a variable we can use .
-// `${isExpanded}` - This is how you use the state variables. Back ticks and ${}.

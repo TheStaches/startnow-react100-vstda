@@ -5,9 +5,9 @@ class LeftCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      key: 0,
+      index: 0,
       name: "",
-      priority: "",
+      priority: 0,
       isEditing: false
     }
 
@@ -28,14 +28,16 @@ class LeftCard extends React.Component {
     });
   }
 
+  // Checks if both name and priority are selected then passes the LeftCard state as an arguement to the App stateHandler function to be save in App.state.
   addComponent() {
-    if (this.state.name !== "" && this.state.priority !== "") {
+    if (this.state.name !== "" && this.state.priority !== 0) {
+      console.log(this.state.priority)
       let obj = this.state;
-      this.props.stateHandler(obj)
+      this.props.stateHandler(obj);
       this.setState({
         name: "",
         priority: "",
-        key: this.state.index + 1,
+        index: this.state.index + 1,
         isEditing: false
       });
     }
@@ -48,19 +50,19 @@ class LeftCard extends React.Component {
           <div className="card-header">Add New Todo</div>
 
           {/* Text Input */}
-            <div className="card-body">I want too...</div>
-            <textarea className="form-control update-todo-text" value={this.state.name} onChange={this.updateName}></textarea>
+            <div className="card-body title">I want too...</div>
+            <textarea className="form-control create-todo-text" value={this.state.name} onChange={this.updateName}></textarea>
           
           {/* Select */}
-            <div className="card-body">How much of a priority is this</div>
-              <select className="form-control update-todo-priority" value={this.state.priority} onChange={this.updatePriority}>
+            <div className="card-body title">How much of a priority is this</div>
+              <select className="form-control create-todo-priority" value={this.state.priority} onChange={this.updatePriority}>
                   <option>Select a Priority</option>
-                  <option>Low</option>
-                  <option>Medium</option>
-                  <option>High</option>
+                  <option value="1">Low Priority</option>
+                  <option value="2">Medium Priority</option>
+                  <option value="3">High Priority</option>
               </select>
               
-          <div className="card-footer"><button onClick={this.addComponent}className="btn btn-success form-control" value="1">Add</button></div>
+          <div className="card-footer"><button onClick={this.addComponent} className="btn btn-success form-control create-todo" value="1">Add</button></div>
         </div>
       </div>
     );

@@ -10,30 +10,60 @@ class App extends Component {
       todoItems: []
     }
     this.stateHandler = this.stateHandler.bind(this);
+    this.updateIsEditing = this.updateIsEditing.bind(this);
+    this.deleteIndex = this.deleteIndex.bind(this);
+    this.editNameState = this.editNameState.bind(this);
+    this.editPriorityState = this.editPriorityState.bind(this);
   } 
 
+  // Takes LeftCard todoItem and concats obj into state
   stateHandler(obj) {
     this.setState({
       todoItems: this.state.todoItems.concat(obj)
     })
   }
 
+  // Updates isEditing on todoItem to render editing page on RightCard
   updateIsEditing(key) {
-    tempItems = this.state.todoItems;
-    tempItems[key].isEditing = true;
+    let tempItems = this.state.todoItems;
+    tempItems[key].isEditing = !tempItems[key].isEditing;
 
     this.setState({
       tempItems
     });
   }
 
-  delete(key) {
-    tempItems = this.state.todoitems;
-    tempItems[key] = {};
+  // Deletes the todoItem when you click the trashcan icon
+  deleteIndex(key) {
+    let arrItems = this.state.todoItems;
+    let iDelete = arrItems.findIndex((obj, index, array) => {return obj.index === key})
+    arrItems.splice(iDelete, 1);
+
+    this.setState({
+      arrItems
+    })
+  }
+
+  // Updates name with the EditPage changes
+  editNameState(key, name) {
+    let tempItems = this.state.todoItems;
+    tempItems[key].name = name;
 
     this.setState({
       tempItems
     })
+
+  }
+
+  // Updates priority with the EditPage changes
+  editPriorityState(key, priority) {
+    let tempItems = this.state.todoItems;
+    tempItems[key].priority = priority;
+
+    this.setState({
+      tempItems
+    })
+
   }
 
 
@@ -46,7 +76,7 @@ class App extends Component {
 
         <div className="row">
           <LeftCard stateHandler={this.stateHandler} name="Add New Todo"/>
-          <RightCard name="View Todos" updateIsEditing={this.updateIsEditing} items={this.state.todoItems}/>
+          <RightCard name="View Todos" updateIsEditing={this.updateIsEditing} deleteIndex={this.deleteIndex} editNameState={this.editNameState} editPriorityState={this.editPriorityState} items={this.state.todoItems}/>
         </div>
       </div>
     );
