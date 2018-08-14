@@ -26,7 +26,9 @@ class App extends Component {
   // Updates isEditing on todoItem to render editing page on RightCard
   updateIsEditing(key) {
     let tempItems = this.state.todoItems;
-    tempItems[key].isEditing = !tempItems[key].isEditing;
+    console.log(tempItems);
+    let iEdit = tempItems.findIndex((obj, index, array) => {return obj.index === key})
+    tempItems[iEdit].isEditing = !tempItems[iEdit].isEditing;
 
     this.setState({
       tempItems
@@ -47,7 +49,8 @@ class App extends Component {
   // Updates name with the EditPage changes
   editNameState(key, name) {
     let tempItems = this.state.todoItems;
-    tempItems[key].name = name;
+    let iName = tempItems.findIndex((obj, index, array) => {return obj.index === key})
+    tempItems[iName].name = name;
 
     this.setState({
       tempItems
@@ -58,7 +61,8 @@ class App extends Component {
   // Updates priority with the EditPage changes
   editPriorityState(key, priority) {
     let tempItems = this.state.todoItems;
-    tempItems[key].priority = priority;
+    let iPriority = tempItems.findIndex((obj, index, array) => {return obj.index === key})
+    tempItems[iPriority].priority = priority;
 
     this.setState({
       tempItems

@@ -4,16 +4,18 @@ import React from "react";
 class TodoItem extends React.Component {
     constructor(props) {
         super(props);
-        this.colors = {
+        this.state = {
+            colors: {
             1: "list-group-item-success",
             2: "list-group-item-warning",
             3: "list-group-item-danger"
-          }
-
-          this.checked = false;
+          },
+            strike: false
+        }
     
     this.edit = this.edit.bind(this);
     this.delete = this.delete.bind(this);
+    this.complete = this.complete.bind(this);
     }
 
     // Passes selected elements index as an arguement to App so it can update isEditing in state and to rerender the todoItem as an EditPage.
@@ -26,12 +28,17 @@ class TodoItem extends React.Component {
         this.props.deleteIndex(this.props.index)
     }
 
+    complete(e) {
+        this.setState({
+            strike: !this.state.strike
+        })
+        console.log(this.state.strike)
+    }
+
     render() {
         return (
-            
-
-            <li className={`list-group-item ${this.colors[this.props.priority]} `}>
-                <input type="checkbox" onClick={this.delete} />
+            <li className={`list-group-item ${this.state.colors[this.props.priority]} ${this.state.strike ? "strike" : ""}`}>
+                <input type="checkbox" onClick={this.complete} />
                 {this.props.name}
                 <a className="button btn float-right delete-todo" onClick={this.delete}><i className="fas fa-trash-alt" /></a>
                 <a className="button btn float-right edit-todo" onClick={this.edit}><i className="fas fa-edit" /></a>

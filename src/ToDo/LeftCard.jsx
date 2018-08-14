@@ -31,7 +31,6 @@ class LeftCard extends React.Component {
   // Checks if both name and priority are selected then passes the LeftCard state as an arguement to the App stateHandler function to be save in App.state.
   addComponent() {
     if (this.state.name !== "" && this.state.priority !== 0) {
-      console.log(this.state.priority)
       let obj = this.state;
       this.props.stateHandler(obj);
       this.setState({
