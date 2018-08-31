@@ -1,89 +1,47 @@
 import React, { Component } from 'react';
-import LeftCard from "./ToDo/LeftCard";
-import RightCard from "./ToDo/RightCard";
+import Axios from 'axios';
 
 // App
-class App extends Component {
-  constructor() {
-    super();
+class App extends React.Component {
+  constructor(props) {
+    super(props);
     this.state = {
-      todoItems: []
+      data: []
     }
-    this.stateHandler = this.stateHandler.bind(this);
-    this.updateIsEditing = this.updateIsEditing.bind(this);
-    this.deleteIndex = this.deleteIndex.bind(this);
-    this.editNameState = this.editNameState.bind(this);
-    this.editPriorityState = this.editPriorityState.bind(this);
-  } 
-
-  // Takes LeftCard todoItem and concats obj into state
-  stateHandler(obj) {
-    this.setState({
-      todoItems: this.state.todoItems.concat(obj)
-    })
   }
 
-  // Updates isEditing on todoItem to render editing page on RightCard
-  updateIsEditing(key) {
-    let tempItems = this.state.todoItems;
-    console.log(tempItems);
-    let iEdit = tempItems.findIndex((obj, index, array) => {return obj.index === key})
-    tempItems[iEdit].isEditing = !tempItems[iEdit].isEditing;
-
-    this.setState({
-      tempItems
-    });
+  componentDidMount() {
+    Axios
+      .get('https://launchlibrary.net/1.2/rocket')
+      .then((response) => {
+        response.data.rockets.map((obj) => {
+          this.setState({
+            data: this.state.data.concat(obj)
+          })
+        })
+      })
+    console.log(this.state.data)
   }
-
-  // Deletes the todoItem when you click the trashcan icon
-  deleteIndex(key) {
-    let arrItems = this.state.todoItems;
-    let iDelete = arrItems.findIndex((obj, index, array) => {return obj.index === key})
-    arrItems.splice(iDelete, 1);
-
-    this.setState({
-      arrItems
-    })
-  }
-
-  // Updates name with the EditPage changes
-  editNameState(key, name) {
-    let tempItems = this.state.todoItems;
-    let iName = tempItems.findIndex((obj, index, array) => {return obj.index === key})
-    tempItems[iName].name = name;
-
-    this.setState({
-      tempItems
-    })
-
-  }
-
-  // Updates priority with the EditPage changes
-  editPriorityState(key, priority) {
-    let tempItems = this.state.todoItems;
-    let iPriority = tempItems.findIndex((obj, index, array) => {return obj.index === key})
-    tempItems[iPriority].priority = priority;
-
-    this.setState({
-      tempItems
-    })
-
-  }
-
 
   render() {
     return (
-      <div className='container'>
-        <h1>Very Simple Todo Application</h1>
-        <h3>Track all of the things</h3>
-        <hr />
+      <div className="container">
+      <h1>Rockets !!!!!</h1>
+          {
+            this.state.data.map((obj, index) => {
+              return (
+              <div className="row" key={index}>
 
-        <div className="row">
-          <LeftCard stateHandler={this.stateHandler} name="Add New Todo"/>
-          <RightCard name="View Todos" updateIsEditing={this.updateIsEditing} deleteIndex={this.deleteIndex} editNameState={this.editNameState} editPriorityState={this.editPriorityState} items={this.state.todoItems}/>
-        </div>
+                  <div className="col-md-3">{obj.id}</div>
+                  <div className="col-md-3">{obj.name}</div>
+                  <div className="col-md-3">{obj.configuration}</div>
+                  <div className="col-md-3">{obj.defaultPads}</div>
+                </div>
+              )
+            })
+          }
       </div>
-    );
+    )
   }
 }
 
